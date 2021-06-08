@@ -7,6 +7,8 @@ app.use(express.json());
 
 require('./routes/index') (app);
 
+app.get('/', (req, res) => res.send('Working!!!'));
+
 app.listen(process.env.PORT || 3000, (err) => {
     if(err) throw err
     console.log('Server running')
