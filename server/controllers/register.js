@@ -1,12 +1,19 @@
 const db = require('../config/conn')
+const bcrypt = require('bcryptjs');
+const { v4: uuidv4 } = require('uuid');
+const BCRYPT_SALT_ROUNDS = 12
 
 exports.post = (req, res) => {
 
-    const user = {
-        "username": req.body.username,
-        "email": req.body.email,
-        "password": req.body.password
-    }
+    bcrypt
+        .hash(req.body.password, BCRYPT_SALT_ROUNDS)
+        .then(hash => {
+            var users = {
+                "id": uuidv4(),
+                "username": req.body.username,
+                "email": req.body.email,
+                "password": req.body.password
+            }
 
     db.query('INSERT INTO user SET?', user, function(error){
         if(error) {
@@ -22,5 +29,5 @@ exports.post = (req, res) => {
         }
     });
 
-    console.log('Registado')
+    })
 }

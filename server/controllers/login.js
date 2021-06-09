@@ -1,4 +1,5 @@
 const db = require('../config/conn')
+const bcrypt = require('bcryptjs');
 
 exports.post = (req, res) => {
 
@@ -16,12 +17,39 @@ exports.post = (req, res) => {
             console.log("Error:", error)
         } else {
 
-            if(results.length > 0) {                    
+            if(results.length > 0) {
+                
+                //Check if the password is correct
+                bcrypt.compare(password, results[0].password, function (err, response) {
 
-                res.json({
-                    user: results,
-                    code:200,
-                    message: 'Successfully authenticate'
+                    if (err) {
+
+                        console.log("Erro: ", err)
+
+                    } else {
+    
+                        
+                        if ( response == false) {
+                            
+                            console.log("bcrypt falsa")
+                            //Email exists, but password is incorrect
+                            //Keep message below for security reasons by not indicating what the error was
+                            res.json({
+                                status:false,
+                                message: "Email and password does not match"
+                            });
+                            res.status(400)
+
+                        } else {
+
+                            console.log("bcrypt verdadeira")
+                            res.json({
+                                user: results,
+                                code:200,
+                                message: 'Successfully authenticate'
+                            })
+                        } 
+                    }
                 })
 
             } else {
