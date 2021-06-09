@@ -12,10 +12,10 @@ exports.post = (req, res) => {
                 "id": uuidv4(),
                 "username": req.body.username,
                 "email": req.body.email,
-                "password": req.body.password
+                "password": hash
             }
 
-    db.query('INSERT INTO user SET?', user, function(error){
+        db.query('INSERT INTO user SET?', user, function(error){
         if(error) {
             res.json({
                 code:401, 
