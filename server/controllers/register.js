@@ -8,7 +8,7 @@ exports.post = (req, res) => {
     bcrypt
         .hash(req.body.password, BCRYPT_SALT_ROUNDS)
         .then(hash => {
-            var users = {
+            var user = {
                 "id": uuidv4(),
                 "username": req.body.username,
                 "email": req.body.email,
