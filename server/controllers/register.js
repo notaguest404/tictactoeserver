@@ -8,14 +8,14 @@ exports.post = (req, res) => {
     bcrypt
         .hash(req.body.password, BCRYPT_SALT_ROUNDS)
         .then(hash => {
-            var user = {
+            var users = {
                 "id": uuidv4(),
                 "username": req.body.username,
                 "email": req.body.email,
                 "password": hash
             }
 
-        db.query('INSERT INTO user SET?', user, function(error){
+    db.query('INSERT INTO user SET?', users, function(error){
         if(error) {
             res.json({
                 code:401, 
